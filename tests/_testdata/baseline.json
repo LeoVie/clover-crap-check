@@ -1,0 +1,12 @@
+[
+  {
+    "classFQN": "ClassA",
+    "name": "m1",
+    "crap": 10
+  },
+  {
+    "classFQN": "Foo\\ClassB",
+    "name": "m2",
+    "crap": 1
+  }
+]

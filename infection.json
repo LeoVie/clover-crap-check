@@ -1,0 +1,16 @@
+{
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "mutators": {
+    "@default": true
+  },
+  "logs": {
+    "html": "build/logs/infection.html"
+  },
+  "minMsi": 100,
+  "minCoveredMsi": 100,
+  "testFrameworkOptions": "--testsuite=Unit"
+}

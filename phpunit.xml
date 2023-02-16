@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" backupGlobals="false" colors="true"
+         executionOrder="random" resolveDependencies="true" failOnRisky="true" failOnWarning="true"
+         beStrictAboutOutputDuringTests="true" bootstrap="vendor/autoload.php" cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="Functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <report>
+            <html outputDirectory="./build/coverage/coverage-html"/>
+            <xml outputDirectory="./build/coverage/coverage-xml"/>
+            <clover outputFile="./build/coverage/clover.xml"/>
+        </report>
+        <exclude>
+            <file>src/phpstan-baseline-guard.php</file>
+        </exclude>
+    </coverage>
+    <logging>
+        <junit outputFile="./build/coverage/junit.xml"/>
+    </logging>
+</phpunit>

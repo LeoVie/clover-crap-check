@@ -1,0 +1,47 @@
+name: CI Pipeline
+on: [ push ]
+jobs:
+  Test:
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-20.04 ]
+        php-version: [ '8.2' ]
+        coverage-driver: [ xdebug ]
+        include:
+          - { operating-system: 'ubuntu-20.04', php-version: '8.2', coverage-driver: 'xdebug'}
+          - { operating-system: 'windows-2022', php-version: '8.2', coverage-driver: 'xdebug'}
+          - { operating-system: 'macos-12', php-version: '8.2', coverage-driver: 'xdebug'}
+
+    name: CI on ${{ matrix.operating-system }} with PHP ${{ matrix.php-version }}, using ${{ matrix.coverage-driver }}
+
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: "Check out repository code"
+        uses: actions/checkout@v3
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: ${{ matrix.coverage-driver }}
+          ini-values: memory_limit=512M, xdebug.mode=coverage
+          tools: composer:v2.5
+          extensions: ctype, iconv, mbstring
+      - name: "Install requirements"
+        run: composer install --no-interaction
+      - name: "Composer normalize dry run"
+        run: composer normalize --dry-run
+      - name: "Static Analysis"
+        run: |
+          composer phpstan
+          composer psalm
+      - name: "Unit Testing"
+        run: composer test:unit
+      - name: "Mutation Testing"
+        run: composer infection
+      - name: "Functional Testing"
+        run: composer test:functional
