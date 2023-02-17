@@ -60,6 +60,6 @@
             "@test:functional"
         ],
         "test:functional": "phpunit --testsuite=Functional --no-coverage",
-        "test:unit": "XDEBUG_MODE=coverage phpunit --testsuite=Unit"
+        "test:unit": "phpunit --testsuite=Unit"
     }
 }
