@@ -38,7 +38,7 @@
         }
     },
     "bin": [
-        "phpstan-baseline-guard"
+        "clover-crap-check"
     ],
     "config": {
         "allow-plugins": {

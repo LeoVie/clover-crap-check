@@ -7,10 +7,19 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 
+/** @phpstan-type BaselineData array<
+ *   array{
+ *     classFQN: string,
+ *     name: string,
+ *     crap: int,
+ *   }
+ * >
+ */
 readonly class BaselineParser implements BaselineParserInterface
 {
     public function parse(string $baselineContent): Baseline
     {
+        /** @var BaselineData $baselineData */
         $baselineData = \Safe\json_decode($baselineContent, true);
 
         if (empty($baselineData)) {

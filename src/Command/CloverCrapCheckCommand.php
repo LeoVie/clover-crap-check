@@ -7,6 +7,7 @@ namespace Leovie\PhpunitCrapCheck\Command;
 use Leovie\PhpunitCrapCheck\DTO\Baseline;
 use Leovie\PhpunitCrapCheck\DTO\BaselineDiffersResult;
 use Leovie\PhpunitCrapCheck\DTO\BaselineEqualsResult;
+use Leovie\PhpunitCrapCheck\DTO\CrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
@@ -77,9 +78,16 @@ class CloverCrapCheckCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $cloverReportPath = $this->getCloverReportPath($input);
-        $crapThreshold = $this->getCrapThreshold($input);
-        $baselinePath = $this->getBaselinePath($input);
+        try {
+            $cloverReportPath = $this->getCloverReportPath($input);
+            $crapThreshold = $this->getCrapThreshold($input);
+            $baselinePath = $this->getBaselinePath($input);
+        } catch (\InvalidArgumentException $e) {
+            $io->error($e->getMessage());
+
+            return Command::INVALID;
+        }
+
         $generateBaselinePath = $this->getGenerateBaselinePath($input);
         $reportLessCrappyMethods = $this->getReportLessCrappyMethods($input);
 
@@ -91,6 +99,10 @@ class CloverCrapCheckCommand extends Command
         $cloverReportContent = \Safe\file_get_contents($cloverReportPath);
         $crapCheckResult = $this->crapCheckService->check($cloverReportContent, $crapThreshold);
 
+        if ($generateBaselinePath !== null) {
+            return $this->generateBaseline($io, $generateBaselinePath, $crapCheckResult);
+        }
+
         if ($crapCheckResult instanceof EmptyCrapCheckResult) {
             if ($io->isVerbose()) {
                 $io->info('No crappy methods detected.');
@@ -100,10 +112,6 @@ class CloverCrapCheckCommand extends Command
         }
 
         /** @var NonEmptyCrapCheckResult $crapCheckResult */
-
-        if ($generateBaselinePath !== null) {
-            return $this->generateBaseline($io, $generateBaselinePath, $crapCheckResult);
-        }
 
         if ($baselinePath !== null) {
             return $this->compareWithBaseline($io, $baselinePath, $crapCheckResult, $reportLessCrappyMethods);
@@ -120,12 +128,22 @@ class CloverCrapCheckCommand extends Command
         /** @var string $cloverReportPath */
         $cloverReportPath = $input->getArgument(self::ARG_CLOVER_REPORT_PATH);
 
+        if (!file_exists($cloverReportPath)) {
+            throw new \InvalidArgumentException(sprintf('Clover report could not be found at "%s".', $cloverReportPath));
+        }
+
         return $cloverReportPath;
     }
 
     private function getCrapThreshold(InputInterface $input): int
     {
-        return (int)$input->getArgument(self::ARG_CRAP_THRESHOLD);
+        $crapThreshold = $input->getArgument(self::ARG_CRAP_THRESHOLD);
+
+        if (!is_numeric($crapThreshold)) {
+            throw new \InvalidArgumentException(sprintf('%s is not an integer.', self::ARG_CRAP_THRESHOLD));
+        }
+
+        return (int)$crapThreshold;
     }
 
     private function getBaselinePath(InputInterface $input): ?string
@@ -133,6 +151,16 @@ class CloverCrapCheckCommand extends Command
         try {
             /** @var ?string $baselinePath */
             $baselinePath = $input->getOption(self::OPT_BASELINE);
+
+            if ($baselinePath === null) {
+                return null;
+            }
+
+            if (!file_exists($baselinePath)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Baseline could not be found at "%s".', $baselinePath)
+                );
+            }
 
             return $baselinePath;
         } catch (InvalidArgumentException) {
@@ -157,7 +185,7 @@ class CloverCrapCheckCommand extends Command
         return (bool)$input->getOption(self::OPT_REPORT_LESS_CRAPPY_METHODS);
     }
 
-    private function generateBaseline(SymfonyStyle $io, string $generateBaselinePath, NonEmptyCrapCheckResult $crapCheckResult): int
+    private function generateBaseline(SymfonyStyle $io, string $generateBaselinePath, CrapCheckResult $crapCheckResult): int
     {
         if ($io->isVerbose()) {
             $io->info(sprintf('Generating baseline at "%s".', $generateBaselinePath));
@@ -224,7 +252,7 @@ class CloverCrapCheckCommand extends Command
         }
         if ($hasMethodsNotOccurringAnymore) {
             $io->info('The following methods are not occurring anymore');
-            $this->outputMethodsTable($io, $baselineCompareResult->methodsNewlyOccurring);
+            $this->outputMethodsTable($io, $baselineCompareResult->methodsNotOccurringAnymore);
         }
         if ($reportLessCrappyMethods) {
             if ($hasMethodsGotLessCrappy) {
@@ -236,7 +264,7 @@ class CloverCrapCheckCommand extends Command
         return Command::FAILURE;
     }
 
-    /** @param array<Method> $baselineCompareResult */
+    /** @param array<Method> $methods */
     private function outputMethodsTable(SymfonyStyle $io, array $methods): void
     {
         $io->table(

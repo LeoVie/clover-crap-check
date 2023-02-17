@@ -22,8 +22,8 @@ class CloverParserTest extends TestCase
         return [
             'valid clover report' => [
                 'expected' => [
-                    new Method('Leovie\\PhpunitCrapCheck\\CloverParser', 'parseMethods', 1),
-                    new Method('Leovie\\PhpunitCrapCheck\\Method', '__construct', 5),
+                    new Method('ClassA', 'm1', 10),
+                    new Method('Foo\\ClassB', 'm2', 2),
                 ],
                 'cloverReportContent' => \Safe\file_get_contents(__DIR__ . '/../../_testdata/clover.xml'),
             ],

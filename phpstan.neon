@@ -6,3 +6,6 @@ parameters:
     paths:
        - %rootDir%/../../../src
        - %rootDir%/../../../tests
+    ignoreErrors:
+        - '%Method Leovie\\PhpunitCrapCheck\\Tests\\.+ has parameter .+ with no value type specified in iterable type.+%'
+        - '%Method Leovie\\PhpunitCrapCheck\\Tests\\.+::.+Provider\(\) return type has no value type specified in iterable type.+%'

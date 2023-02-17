@@ -30,7 +30,7 @@ class BaselineOutputGeneratorTest extends TestCase
                 'expected' => \Safe\file_get_contents(__DIR__ . '/../../_testdata/baseline.json'),
                 'baseline' => new Baseline(new NonEmptyCrapCheckResult([
                     new Method('ClassA', 'm1', 10),
-                    new Method('Foo\\ClassB', 'm2', 1),
+                    new Method('Foo\\ClassB', 'm2', 2),
                 ])),
             ],
         ];

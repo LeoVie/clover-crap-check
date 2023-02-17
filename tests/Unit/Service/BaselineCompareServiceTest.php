@@ -22,7 +22,7 @@ class BaselineCompareServiceTest extends TestCase
         BaselineCompareResult $expected,
         CrapCheckResult       $crapCheckResult,
         Baseline              $baseline
-    )
+    ): void
     {
         self::assertEquals($expected, (new BaselineCompareService())->compare($crapCheckResult, $baseline));
     }

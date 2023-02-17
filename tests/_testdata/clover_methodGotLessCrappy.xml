@@ -5,7 +5,7 @@
       <class name="ClassA" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
       </class>
-      <line num="17" type="method" name="m1" visibility="public" complexity="1" crap="10" count="1"/>
+      <line num="17" type="method" name="m1" visibility="public" complexity="1" crap="5" count="1"/>
       <line num="19" type="stmt" count="1"/>
       <line num="21" type="stmt" count="1"/>
       <line num="22" type="stmt" count="1"/>

@@ -25,6 +25,13 @@
       <line num="15" type="stmt" count="1"/>
       <metrics loc="16" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
     </file>
+    <file name="/var/www/ClassC.php">
+      <class name="ClassC" namespace="global">
+        <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
+      </class>
+      <line num="17" type="method" name="m3" visibility="public" complexity="1" crap="5" count="1"/>
+      <metrics loc="30" ncloc="26" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="10" coveredelements="10"/>
+    </file>
     <metrics files="2" loc="46" ncloc="42" classes="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="10" elements="12" coveredelements="12"/>
   </project>
 </coverage>
