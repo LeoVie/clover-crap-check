@@ -14,18 +14,19 @@
     ],
     "require": {
         "php": ">=8.2",
-        "ext-simplexml": "*",
         "symfony/console": "^6.2",
+        "symfony/css-selector": "^6.2",
+        "symfony/dom-crawler": "^6.2",
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.29",
         "infection/infection": "^0.26.19",
         "phpstan/phpstan": "^1.9",
-        "psalm/plugin-phpunit": "^0.18.4",
-        "vimeo/psalm": "^5.6",
         "phpunit/phpunit": "^10.0",
-        "symfony/var-dumper": "^6.2"
+        "psalm/plugin-phpunit": "^0.18.4",
+        "symfony/var-dumper": "^6.2",
+        "vimeo/psalm": "^5.6"
     },
     "autoload": {
         "psr-4": {
@@ -59,6 +60,6 @@
             "@test:functional"
         ],
         "test:functional": "phpunit --testsuite=Functional --no-coverage",
-        "test:unit": "phpunit --testsuite=Unit"
+        "test:unit": "XDEBUG_MODE=coverage phpunit --testsuite=Unit"
     }
 }
