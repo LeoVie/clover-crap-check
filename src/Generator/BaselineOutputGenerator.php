@@ -19,6 +19,6 @@ readonly class BaselineOutputGenerator implements BaselineOutputGeneratorInterfa
 
         /** @var NonEmptyCrapCheckResult $baselineCrapCheckResult */
 
-        return \Safe\json_encode($baselineCrapCheckResult->tooCrappyMethods);
+        return \Safe\json_encode($baselineCrapCheckResult->tooCrappyMethods, JSON_PRETTY_PRINT);
     }
 }
