@@ -265,11 +265,20 @@ class CloverCrapCheckTest extends TestCase
                     '--report-less-crappy-methods' => true
                 ],
             ],
-            'method not occurring anymore' => [
+            'method vanished, dont report vanished methods' => [
+                'expectedStatus' => 0,
+                'expectedOutput' => '',
+                'inputs' => [
+                    'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
+                    'crap-threshold' => 5,
+                    '--baseline' => __DIR__ . '/../_testdata/baseline.json',
+                ],
+            ],
+            'method vanished, report vanished methods' => [
                 'expectedStatus' => 1,
                 'expectedOutput' =>
                     '[ERROR] The baseline is not up to date
-                     [INFO] The following methods are not occurring anymore 
+                     [INFO] The following methods vanished 
                      ------------ -------- ------ 
                       Class        method   CRAP  
                      ------------ -------- ------ 
@@ -279,6 +288,7 @@ class CloverCrapCheckTest extends TestCase
                     'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
                     'crap-threshold' => 5,
                     '--baseline' => __DIR__ . '/../_testdata/baseline.json',
+                    '--report-vanished-methods' => true
                 ],
             ],
             'method newly occurring' => [

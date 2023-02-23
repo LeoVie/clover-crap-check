@@ -32,6 +32,7 @@ class CloverCrapCheckCommand extends Command
     private const OPT_BASELINE = 'baseline';
     private const OPT_GENERATE_BASELINE = 'generate-baseline';
     private const OPT_REPORT_LESS_CRAPPY_METHODS = 'report-less-crappy-methods';
+    private const OPT_REPORT_VANISHED_METHODS = 'report-vanished-methods';
 
     public function __construct(
         private readonly CrapCheckService       $crapCheckService,
@@ -71,6 +72,11 @@ class CloverCrapCheckCommand extends Command
             shortcut: 'l',
             mode: InputOption::VALUE_NONE,
             description: 'Report methods that are less crappy than in baseline',
+        )->addOption(
+            name: self::OPT_REPORT_VANISHED_METHODS,
+            shortcut: 'd',
+            mode: InputOption::VALUE_NONE,
+            description: 'Report methods that are in your baseline but not occurring anymore',
         );
     }
 
@@ -90,6 +96,7 @@ class CloverCrapCheckCommand extends Command
 
         $generateBaselinePath = $this->getGenerateBaselinePath($input);
         $reportLessCrappyMethods = $this->getReportLessCrappyMethods($input);
+        $reportVanishedMethods = $this->getReportVanishedMethods($input);
 
         if ($baselinePath !== null && $generateBaselinePath !== null) {
             $io->error('Only use baseline or generate baseline, not both.');
@@ -114,7 +121,7 @@ class CloverCrapCheckCommand extends Command
         /** @var NonEmptyCrapCheckResult $crapCheckResult */
 
         if ($baselinePath !== null) {
-            return $this->compareWithBaseline($io, $baselinePath, $crapCheckResult, $reportLessCrappyMethods);
+            return $this->compareWithBaseline($io, $baselinePath, $crapCheckResult, $reportLessCrappyMethods, $reportVanishedMethods);
         }
 
         $io->error('The following methods are crappier than allowed');
@@ -185,6 +192,11 @@ class CloverCrapCheckCommand extends Command
         return (bool)$input->getOption(self::OPT_REPORT_LESS_CRAPPY_METHODS);
     }
 
+    private function getReportVanishedMethods(InputInterface $input): bool
+    {
+        return (bool)$input->getOption(self::OPT_REPORT_VANISHED_METHODS);
+    }
+
     private function generateBaseline(SymfonyStyle $io, string $generateBaselinePath, CrapCheckResult $crapCheckResult): int
     {
         if ($io->isVerbose()) {
@@ -204,6 +216,7 @@ class CloverCrapCheckCommand extends Command
         string                  $baselinePath,
         NonEmptyCrapCheckResult $crapCheckResult,
         bool                    $reportLessCrappyMethods,
+        bool                    $reportVanishedMethods,
     ): int
     {
         if ($io->isVerbose()) {
@@ -230,14 +243,13 @@ class CloverCrapCheckCommand extends Command
 
         $hasMethodsNewlyOccurring = count($baselineCompareResult->methodsNewlyOccurring) > 0;
         $hasMethodsGotCrappier = count($baselineCompareResult->methodsGotCrappier) > 0;
-        $hasMethodsNotOccurringAnymore = count($baselineCompareResult->methodsNotOccurringAnymore) > 0;
+        $hasVanishedMethods = count($baselineCompareResult->methodsNotOccurringAnymore) > 0;
         $hasMethodsGotLessCrappy = count($baselineCompareResult->methodsGotLessCrappy) > 0;
 
-        $hasOnlyLessCrappyMethods = !$hasMethodsNewlyOccurring
-            && !$hasMethodsGotCrappier
-            && !$hasMethodsNotOccurringAnymore;
+        $hasOnlyLessCrappyOrVanishedMethods = !$hasMethodsNewlyOccurring
+            && !$hasMethodsGotCrappier;
 
-        if (!$reportLessCrappyMethods && $hasOnlyLessCrappyMethods) {
+        if (!$reportLessCrappyMethods && !$reportVanishedMethods && $hasOnlyLessCrappyOrVanishedMethods) {
             return Command::SUCCESS;
         }
 
@@ -250,9 +262,11 @@ class CloverCrapCheckCommand extends Command
             $io->error('The following methods got crappier');
             $this->outputMethodsTable($io, $baselineCompareResult->methodsGotCrappier);
         }
-        if ($hasMethodsNotOccurringAnymore) {
-            $io->info('The following methods are not occurring anymore');
-            $this->outputMethodsTable($io, $baselineCompareResult->methodsNotOccurringAnymore);
+        if ($reportVanishedMethods) {
+            if ($hasVanishedMethods) {
+                $io->info('The following methods vanished');
+                $this->outputMethodsTable($io, $baselineCompareResult->methodsNotOccurringAnymore);
+            }
         }
         if ($reportLessCrappyMethods) {
             if ($hasMethodsGotLessCrappy) {
