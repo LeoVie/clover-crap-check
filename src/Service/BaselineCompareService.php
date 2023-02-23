@@ -46,7 +46,7 @@ readonly class BaselineCompareService
         /** @var NonEmptyCrapCheckResult $baselineCrapCheckResult */
         $baselineCrapCheckResult = $baseline->crapCheckResult;
 
-        $methodsNotOccurringAnymore = [];
+        $methodsVanished = [];
         $methodsNewlyOccurring = [];
         $methodsGotCrappier = [];
         $methodsGotLessCrappy = [];
@@ -58,7 +58,7 @@ readonly class BaselineCompareService
             );
 
             if ($actualMethod === null) {
-                $methodsNotOccurringAnymore[] = $baselineMethod;
+                $methodsVanished[] = $baselineMethod;
             } else if ($this->isCrappier($actualMethod, $baselineMethod)) {
                 $methodsGotCrappier[] = $actualMethod;
             } else if ($this->isLessCrappy($actualMethod, $baselineMethod)) {
@@ -78,7 +78,7 @@ readonly class BaselineCompareService
         }
 
         return new BaselineDiffersResult(
-            methodsNotOccurringAnymore: $methodsNotOccurringAnymore,
+            methodsNotOccurringAnymore: $methodsVanished,
             methodsNewlyOccurring: $methodsNewlyOccurring,
             methodsGotCrappier: $methodsGotCrappier,
             methodsGotLessCrappy: $methodsGotLessCrappy,

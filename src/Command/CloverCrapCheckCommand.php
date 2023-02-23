@@ -23,6 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 #[AsCommand(name: 'clover-crap-check')]
 class CloverCrapCheckCommand extends Command
@@ -82,19 +84,21 @@ class CloverCrapCheckCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $cwd = \Safe\getcwd();
+
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $cloverReportPath = $this->getCloverReportPath($input);
+            $cloverReportPath = $this->getCloverReportPath($input, $cwd);
             $crapThreshold = $this->getCrapThreshold($input);
-            $baselinePath = $this->getBaselinePath($input);
+            $baselinePath = $this->getBaselinePath($input, $cwd);
         } catch (\InvalidArgumentException $e) {
             $io->error($e->getMessage());
 
             return Command::INVALID;
         }
 
-        $generateBaselinePath = $this->getGenerateBaselinePath($input);
+        $generateBaselinePath = $this->getGenerateBaselinePath($input, $cwd);
         $reportLessCrappyMethods = $this->getReportLessCrappyMethods($input);
         $reportVanishedMethods = $this->getReportVanishedMethods($input);
 
@@ -130,10 +134,11 @@ class CloverCrapCheckCommand extends Command
         return Command::FAILURE;
     }
 
-    private function getCloverReportPath(InputInterface $input): string
+    private function getCloverReportPath(InputInterface $input, string $cwd): string
     {
         /** @var string $cloverReportPath */
         $cloverReportPath = $input->getArgument(self::ARG_CLOVER_REPORT_PATH);
+        $cloverReportPath = Path::makeAbsolute($cloverReportPath, $cwd);
 
         if (!file_exists($cloverReportPath)) {
             throw new \InvalidArgumentException(sprintf('Clover report could not be found at "%s".', $cloverReportPath));
@@ -153,7 +158,7 @@ class CloverCrapCheckCommand extends Command
         return (int)$crapThreshold;
     }
 
-    private function getBaselinePath(InputInterface $input): ?string
+    private function getBaselinePath(InputInterface $input, string $cwd): ?string
     {
         try {
             /** @var ?string $baselinePath */
@@ -162,6 +167,8 @@ class CloverCrapCheckCommand extends Command
             if ($baselinePath === null) {
                 return null;
             }
+
+            Path::makeAbsolute($baselinePath, $cwd);
 
             if (!file_exists($baselinePath)) {
                 throw new \InvalidArgumentException(
@@ -175,13 +182,17 @@ class CloverCrapCheckCommand extends Command
         }
     }
 
-    private function getGenerateBaselinePath(InputInterface $input): ?string
+    private function getGenerateBaselinePath(InputInterface $input, string $cwd): ?string
     {
         try {
             /** @var ?string $generateBaselinePath */
             $generateBaselinePath = $input->getOption(self::OPT_GENERATE_BASELINE);
 
-            return $generateBaselinePath;
+            if ($generateBaselinePath === null) {
+                return null;
+            }
+
+            return Path::makeAbsolute($generateBaselinePath, $cwd);
         } catch (InvalidArgumentException) {
             return null;
         }

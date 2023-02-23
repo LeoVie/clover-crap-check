@@ -162,6 +162,21 @@ class CloverCrapCheckTest extends TestCase
                     '--generate-baseline' => __DIR__ . '/../_testdata/generated/baseline.json'
                 ],
             ],
+            'too crappy methods, relative path' => [
+                'expectedBaselinePath' => __DIR__ . '/../_testdata/generated/baseline.json',
+                'expectedBaseline' => json_encode([
+                    [
+                        'classFQN' => 'ClassA',
+                        'name' => 'm1',
+                        'crap' => 10,
+                    ]
+                ]),
+                'inputs' => [
+                    'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
+                    'crap-threshold' => 5,
+                    '--generate-baseline' => \Safe\getcwd() . '/tests/_testdata/generated/baseline.json'
+                ],
+            ],
         ];
     }
 
@@ -200,6 +215,14 @@ class CloverCrapCheckTest extends TestCase
                     'crap-threshold' => 10,
                 ],
             ],
+            'no too crappy methods, (clover relative path)' => [
+                'expectedStatus' => 0,
+                'expectedOutputs' => '',
+                'inputs' => [
+                    'clover-report-path' => \Safe\getcwd() . '/tests/_testdata/clover.xml',
+                    'crap-threshold' => 10,
+                ],
+            ],
             'all crappy methods covered by baseline' => [
                 'expectedStatus' => 0,
                 'expectedOutput' => '',
@@ -207,6 +230,15 @@ class CloverCrapCheckTest extends TestCase
                     'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
                     'crap-threshold' => 1,
                     '--baseline' => __DIR__ . '/../_testdata/baseline.json',
+                ],
+            ],
+            'all crappy methods covered by baseline (baseline relative path)' => [
+                'expectedStatus' => 0,
+                'expectedOutput' => '',
+                'inputs' => [
+                    'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
+                    'crap-threshold' => 1,
+                    '--baseline' => \Safe\getcwd() . '/tests/_testdata/baseline.json',
                 ],
             ],
             'crappy methods, no baseline' => [
