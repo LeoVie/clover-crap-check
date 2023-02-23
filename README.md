@@ -47,15 +47,8 @@ with a path to where the baseline file should get stored.
 The path can be absolute or relative to cwd.
 ```bash
 vendor/bin/clover-crap-check clover.xml 50 \
-  --generate-baseline=/foo/bar/baseline.json
+  --generate-baseline=baseline.json
 ```
-
-If you are on a unix system, you can also use
-```bash
-vendor/bin/clover-crap-check clover.xml 50 \
-  --generate-baseline=$(pwd)/baseline.json
-```
-for more flexibility.
 
 This will run `clover-crap-check` and generate a baseline file that
 contains all your files with a CRAP index over the defined threshold
@@ -84,7 +77,7 @@ via the option `--baseline` to the tool.
 The path can be absolute or relative to cwd.
 ```bash
 vendor/bin/clover-crap-check clover.xml 50 \
-  --baseline=/foo/bar/baseline.json
+  --baseline=baseline.json
 ```
 
 `clover-crap-check` should not report anything in that case.
@@ -127,7 +120,7 @@ to `clover-crap-check`
 
 ```bash
 vendor/bin/clover-crap-check clover.xml 50 \
-  --baseline=/foo/bar/baseline.json \
+  --baseline=baseline.json \
   --report-less-crappy-methods
 ```
 
