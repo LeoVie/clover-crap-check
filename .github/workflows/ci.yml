@@ -41,6 +41,10 @@ jobs:
           composer psalm
       - name: "Unit Testing"
         run: composer test:unit
+      - name: "Check coverage"
+        run: composer coverage-check
+      - name: "Check clover CRAP"
+        run: composer clover-crap-check
       - name: "Mutation Testing"
         run: composer infection
       - name: "Functional Testing"
