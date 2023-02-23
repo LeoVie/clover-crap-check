@@ -50,7 +50,7 @@
         }
     },
     "scripts": {
-        "clover-crap-check": "php clover-crap-check.php build/coverage/clover.xml 10",
+        "clover-crap-check": "clover-crap-check build/coverage/clover.xml 10",
         "coverage-check": "coverage-check build/coverage/clover.xml 100",
         "infection": "infection --threads=max --only-covered",
         "phpstan": "phpstan",
