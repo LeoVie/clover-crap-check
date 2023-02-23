@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Leovie\PhpunitCrapCheck\Service;
 
 use Leovie\PhpunitCrapCheck\DTO\Baseline;
-use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGenerator;
+use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGeneratorInterface;
 
 readonly class BaselineOutputService
 {
     public function __construct(
-        private BaselineOutputGenerator $baselineOutputGenerator
+        private BaselineOutputGeneratorInterface $baselineOutputGenerator
     )
     {
     }

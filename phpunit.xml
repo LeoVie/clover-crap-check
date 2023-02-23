@@ -22,7 +22,7 @@
             <clover outputFile="./build/coverage/clover.xml"/>
         </report>
         <exclude>
-            <file>src/phpstan-baseline-guard.php</file>
+            <directory>src/Command</directory>
         </exclude>
     </coverage>
     <logging>

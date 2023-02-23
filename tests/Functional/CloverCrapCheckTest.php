@@ -21,9 +21,7 @@ class CloverCrapCheckTest extends TestCase
 
     protected function setUp(): void
     {
-        if (file_exists(__DIR__ . '/../_testdata/generated/baseline.json')) {
-            unlink(__DIR__ . '/../_testdata/generated/baseline.json');
-        }
+        $this->deleteExistingBaselineFile();
 
         $this->commandTester = new CommandTester(new CloverCrapCheckCommand(
             new CrapCheckService(new CloverParser()),
@@ -34,6 +32,11 @@ class CloverCrapCheckTest extends TestCase
     }
 
     protected function tearDown(): void
+    {
+        $this->deleteExistingBaselineFile();
+    }
+
+    private function deleteExistingBaselineFile(): void
     {
         if (file_exists(__DIR__ . '/../_testdata/generated/baseline.json')) {
             unlink(__DIR__ . '/../_testdata/generated/baseline.json');

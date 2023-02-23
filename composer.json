@@ -25,6 +25,7 @@
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^10.0",
         "psalm/plugin-phpunit": "^0.18.4",
+        "rregeer/phpunit-coverage-check": "^0.3.1",
         "symfony/var-dumper": "^6.2",
         "vimeo/psalm": "^5.6"
     },
@@ -48,6 +49,7 @@
         }
     },
     "scripts": {
+        "coverage-check": "coverage-check build/coverage/clover.xml 100",
         "infection": "infection --threads=max --only-covered",
         "phpstan": "phpstan",
         "psalm": "psalm --no-progress --no-cache",
@@ -56,6 +58,7 @@
             "@phpstan",
             "@psalm",
             "@test:unit",
+            "@coverage-check",
             "@infection",
             "@test:functional"
         ],
