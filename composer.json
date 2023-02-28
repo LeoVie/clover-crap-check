@@ -21,14 +21,14 @@
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.29",
+        "ergebnis/composer-normalize": "^2.30",
         "infection/infection": "^0.26.19",
-        "phpstan/phpstan": "^1.9",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.0",
         "psalm/plugin-phpunit": "^0.18.4",
         "rregeer/phpunit-coverage-check": "^0.3.1",
         "symfony/var-dumper": "^6.2",
-        "vimeo/psalm": "^5.6"
+        "vimeo/psalm": "^5.7"
     },
     "autoload": {
         "psr-4": {
@@ -50,6 +50,7 @@
         }
     },
     "scripts": {
+        "build-phar": "curl -JL -o phar-composer.phar https://clue.engineering/phar-composer-latest.phar && composer install --no-dev && php phar-composer.phar build . && composer install",
         "clover-crap-check": "php clover-crap-check build/coverage/clover.xml 10",
         "coverage-check": "coverage-check build/coverage/clover.xml 100",
         "infection": "infection --threads=max --only-covered",
