@@ -1,0 +1,43 @@
+name: "Finish release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  Tagged_release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: 8.2
+          tools: composer:v2.5
+          extensions: ctype, iconv, mbstring
+
+      - name: Build
+        run: |
+          composer build-phar
+      - name: Upload build artifacts to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: build/artifacts/*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+      - name: Upload LICENSE to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: LICENSE
+          tag: ${{ github.ref }}
+          overwrite: true
