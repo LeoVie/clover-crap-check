@@ -5,6 +5,10 @@ files have a [CRAP index](https://blog.ndepend.com/crap-metric-thing-tells-risk-
 below a specified threshold.
 
 ## Installation
+### PHAR (recommended)
+You can download the latest PHAR from https://github.com/LeoVie/clover-crap-check/releases/latest
+
+### Composer
 Install via composer as a dev dependency
 ```bash
 composer require --dev leovie/clover-crap-check
