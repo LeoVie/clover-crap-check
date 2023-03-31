@@ -32,6 +32,7 @@ class BaselineCompareServiceTest extends TestCase
         $m1_10 = new Method('ClassA', 'm1', 10);
         $m1_15 = new Method('ClassA', 'm1', 15);
         $m2_10 = new Method('ClassA', 'm2', 10);
+        $m3_10 = new Method('ClassB', 'm3', 10);
         return [
             'both empty' => [
                 'expected' => new BaselineEqualsResult(),
@@ -40,8 +41,23 @@ class BaselineCompareServiceTest extends TestCase
             ],
             'both equal' => [
                 'expected' => new BaselineEqualsResult(),
-                'crapCheckResult' => new NonEmptyCrapCheckResult([$m1_10]),
-                'baseline' => new Baseline(new NonEmptyCrapCheckResult([$m1_10])),
+                'crapCheckResult' => new NonEmptyCrapCheckResult([$m1_10, $m2_10]),
+                'baseline' => new Baseline(new NonEmptyCrapCheckResult([$m1_10, $m2_10])),
+            ],
+            'both equal, full duplicate entry' => [
+                'expected' => new BaselineEqualsResult(),
+                'crapCheckResult' => new NonEmptyCrapCheckResult([$m1_10, $m1_10]),
+                'baseline' => new Baseline(new NonEmptyCrapCheckResult([$m1_10, $m1_10])),
+            ],
+            'both equal, duplicate class method, different crap' => [
+                'expected' => new BaselineEqualsResult(),
+                'crapCheckResult' => new NonEmptyCrapCheckResult([$m1_10, $m1_15]),
+                'baseline' => new Baseline(new NonEmptyCrapCheckResult([$m1_10, $m1_15])),
+            ],
+            'both equal, order differs' => [
+                'expected' => new BaselineEqualsResult(),
+                'crapCheckResult' => new NonEmptyCrapCheckResult([$m1_10, $m3_10, $m2_10]),
+                'baseline' => new Baseline(new NonEmptyCrapCheckResult([$m2_10, $m3_10, $m1_10])),
             ],
             'actual empty' => [
                 'expected' => new BaselineDiffersResult(

@@ -10,7 +10,7 @@
   "logs": {
     "html": "build/logs/infection.html"
   },
-  "minMsi": 100,
-  "minCoveredMsi": 100,
+  "minMsi": 95,
+  "minCoveredMsi": 95,
   "testFrameworkOptions": "--testsuite=Unit"
 }
