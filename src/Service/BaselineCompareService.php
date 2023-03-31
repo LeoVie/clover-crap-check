@@ -15,9 +15,13 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 
 readonly class BaselineCompareService
 {
+    private const COMPARE_RESULT_EQUAL = 0;
+    private const COMPARE_RESULT_SMALLER = -1;
+    private const COMPARE_RESULT_BIGGER = 1;
+
     public function compare(CrapCheckResult $crapCheckResult, Baseline $baseline): BaselineCompareResult
     {
-        if ($crapCheckResult == $baseline->crapCheckResult) {
+        if ($this->sortCrapCheckResult($crapCheckResult) == $this->sortCrapCheckResult($baseline->crapCheckResult)) {
             return new BaselineEqualsResult();
         }
 
@@ -83,6 +87,41 @@ readonly class BaselineCompareService
             methodsGotCrappier: $methodsGotCrappier,
             methodsGotLessCrappy: $methodsGotLessCrappy,
         );
+    }
+
+    private function sortCrapCheckResult(CrapCheckResult $crapCheckResult): CrapCheckResult
+    {
+        if (!($crapCheckResult instanceof NonEmptyCrapCheckResult)) {
+            return $crapCheckResult;
+        }
+
+        $tooCrappyMethods = $crapCheckResult->tooCrappyMethods;
+
+        usort($tooCrappyMethods, function (Method $a, Method $b): int {
+            if ($a == $b) {
+                return self::COMPARE_RESULT_EQUAL;
+            }
+
+            if ($a->classFQN < $b->classFQN) {
+                return self::COMPARE_RESULT_SMALLER;
+            }
+
+            if ($a->classFQN > $b->classFQN) {
+                return self::COMPARE_RESULT_BIGGER;
+            }
+
+            if ($a->name < $b->name) {
+                return self::COMPARE_RESULT_SMALLER;
+            }
+
+            if ($a->name > $b->name) {
+                return self::COMPARE_RESULT_BIGGER;
+            }
+
+            return self::COMPARE_RESULT_EQUAL;
+        });
+
+        return new NonEmptyCrapCheckResult($tooCrappyMethods);
     }
 
     private function extractByClassFQNAndMethod(
