@@ -223,6 +223,24 @@ class CloverCrapCheckTest extends TestCase
                     'crap-threshold' => 10,
                 ],
             ],
+            'no too crappy methods, but baseline is not empty' => [
+                'expectedStatus' => 1,
+                'expectedOutput' =>
+                    '[ERROR] The baseline is not up to date
+                     [INFO] The following methods vanished 
+                     ------------ -------- ------ 
+                      Class        method   CRAP  
+                     ------------ -------- ------ 
+                      ClassA       m1       10    
+                      Foo\ClassB   m2       2    
+                     ------------ -------- ------',
+                'inputs' => [
+                    'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
+                    'crap-threshold' => 10,
+                    '--baseline' => __DIR__ . '/../_testdata/baseline.json',
+                    '--report-vanished-methods' => true
+                ],
+            ],
             'all crappy methods covered by baseline' => [
                 'expectedStatus' => 0,
                 'expectedOutput' => '',

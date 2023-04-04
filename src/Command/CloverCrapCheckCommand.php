@@ -23,7 +23,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 #[AsCommand(name: 'clover-crap-check')]
@@ -114,6 +113,10 @@ class CloverCrapCheckCommand extends Command
             return $this->generateBaseline($io, $generateBaselinePath, $crapCheckResult);
         }
 
+        if ($baselinePath !== null) {
+            return $this->compareWithBaseline($io, $baselinePath, $crapCheckResult, $reportLessCrappyMethods, $reportVanishedMethods);
+        }
+
         if ($crapCheckResult instanceof EmptyCrapCheckResult) {
             if ($io->isVerbose()) {
                 $io->info('No crappy methods detected.');
@@ -123,10 +126,6 @@ class CloverCrapCheckCommand extends Command
         }
 
         /** @var NonEmptyCrapCheckResult $crapCheckResult */
-
-        if ($baselinePath !== null) {
-            return $this->compareWithBaseline($io, $baselinePath, $crapCheckResult, $reportLessCrappyMethods, $reportVanishedMethods);
-        }
 
         $io->error('The following methods are crappier than allowed');
         $this->outputMethodsTable($io, $crapCheckResult->tooCrappyMethods);
@@ -223,11 +222,11 @@ class CloverCrapCheckCommand extends Command
     }
 
     private function compareWithBaseline(
-        SymfonyStyle            $io,
-        string                  $baselinePath,
-        NonEmptyCrapCheckResult $crapCheckResult,
-        bool                    $reportLessCrappyMethods,
-        bool                    $reportVanishedMethods,
+        SymfonyStyle    $io,
+        string          $baselinePath,
+        CrapCheckResult $crapCheckResult,
+        bool            $reportLessCrappyMethods,
+        bool            $reportVanishedMethods,
     ): int
     {
         if ($io->isVerbose()) {
