@@ -15,7 +15,7 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
  *   }
  * >
  */
-readonly class BaselineParser implements BaselineParserInterface
+class BaselineParser implements BaselineParserInterface
 {
     public function parse(string $baselineContent): Baseline
     {

@@ -13,7 +13,7 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 
-readonly class BaselineCompareService
+class BaselineCompareService
 {
     private const COMPARE_RESULT_EQUAL = 0;
     private const COMPARE_RESULT_SMALLER = -1;
