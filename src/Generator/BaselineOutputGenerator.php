@@ -8,7 +8,7 @@ use Leovie\PhpunitCrapCheck\DTO\Baseline;
 use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 
-readonly class BaselineOutputGenerator implements BaselineOutputGeneratorInterface
+class BaselineOutputGenerator implements BaselineOutputGeneratorInterface
 {
     public function generate(Baseline $baseline): string
     {

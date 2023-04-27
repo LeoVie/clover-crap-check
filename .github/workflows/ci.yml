@@ -11,8 +11,11 @@ jobs:
         php-version: [ '8.2' ]
         coverage-driver: [ xdebug ]
         include:
+          - { operating-system: 'ubuntu-20.04', php-version: '8.1', coverage-driver: 'xdebug'}
           - { operating-system: 'ubuntu-20.04', php-version: '8.2', coverage-driver: 'xdebug'}
+          - { operating-system: 'windows-2022', php-version: '8.1', coverage-driver: 'xdebug'}
           - { operating-system: 'windows-2022', php-version: '8.2', coverage-driver: 'xdebug'}
+          - { operating-system: 'macos-12', php-version: '8.1', coverage-driver: 'xdebug'}
           - { operating-system: 'macos-12', php-version: '8.2', coverage-driver: 'xdebug'}
 
     name: CI on ${{ matrix.operating-system }} with PHP ${{ matrix.php-version }}, using ${{ matrix.coverage-driver }}
