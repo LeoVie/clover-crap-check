@@ -10,15 +10,17 @@ use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGeneratorInterface;
 use Leovie\PhpunitCrapCheck\Service\BaselineOutputService;
 use PHPUnit\Framework\TestCase;
 
-class BaselineOutputServiceTest extends TestCase
+final class BaselineOutputServiceTest extends TestCase
 {
-    private const GENERATED_BASELINE_FILE = __DIR__ . '/../../_testdata/generated/baseline.json';
+    private const string GENERATED_BASELINE_FILE = __DIR__ . '/../../_testdata/generated/baseline.json';
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->deleteExistingBaselineFile();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->deleteExistingBaselineFile();

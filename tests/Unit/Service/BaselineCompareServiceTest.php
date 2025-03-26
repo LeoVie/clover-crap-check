@@ -15,7 +15,7 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Service\BaselineCompareService;
 use PHPUnit\Framework\TestCase;
 
-class BaselineCompareServiceTest extends TestCase
+final class BaselineCompareServiceTest extends TestCase
 {
     /** @dataProvider compareProvider */
     public function testCompare(

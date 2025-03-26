@@ -12,7 +12,7 @@ use Leovie\PhpunitCrapCheck\Parser\CloverParserInterface;
 use Leovie\PhpunitCrapCheck\Service\CrapCheckService;
 use PHPUnit\Framework\TestCase;
 
-class CrapCheckServiceTest extends TestCase
+final class CrapCheckServiceTest extends TestCase
 {
     /** @dataProvider checkProvider */
     public function testCheck(CrapCheckResult $expected, array $methods, int $threshold): void

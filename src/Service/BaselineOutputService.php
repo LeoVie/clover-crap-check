@@ -7,10 +7,10 @@ namespace Leovie\PhpunitCrapCheck\Service;
 use Leovie\PhpunitCrapCheck\DTO\Baseline;
 use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGeneratorInterface;
 
-class BaselineOutputService
+final readonly class BaselineOutputService
 {
     public function __construct(
-        private readonly BaselineOutputGeneratorInterface $baselineOutputGenerator
+        private BaselineOutputGeneratorInterface $baselineOutputGenerator
     )
     {
     }

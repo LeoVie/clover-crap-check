@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Leovie\PhpunitCrapCheck\DTO;
 
-class Method
+final readonly class Method
 {
     public function __construct(
-        public readonly string $classFQN,
-        public readonly string $name,
-        public readonly int    $crap,
+        public string $classFQN,
+        public string $name,
+        public int    $crap,
     )
     {
     }

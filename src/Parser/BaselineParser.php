@@ -6,6 +6,7 @@ use Leovie\PhpunitCrapCheck\DTO\Baseline;
 use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
+use Override;
 
 /** @phpstan-type BaselineData array<
  *   array{
@@ -15,8 +16,9 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
  *   }
  * >
  */
-class BaselineParser implements BaselineParserInterface
+final readonly class BaselineParser implements BaselineParserInterface
 {
+    #[Override]
     public function parse(string $baselineContent): Baseline
     {
         /** @var BaselineData $baselineData */

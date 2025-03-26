@@ -7,18 +7,27 @@ namespace Leovie\PhpunitCrapCheck\Parser;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CloverParser implements CloverParserInterface
+final readonly class CloverParser implements CloverParserInterface
 {
-    /** @return array<Method> */
+    #[\Override]
     public function parseMethods(string $cloverReportContent): array
     {
         $crawler = new Crawler($cloverReportContent);
         $rawMethods = $crawler->filter('line[type="method"]');
 
-        return $rawMethods->each(fn (Crawler $node) => new Method(
-            $node->siblings()->filter('class')->first()->attr('name') ?: '',
-            $node->attr('name') ?: '',
-            (int) $node->attr('crap')
-        ));
+        /** @var array<Method> $methods */
+        $methods = $rawMethods->each(function (Crawler $node): Method {
+            $firstClassName = $node->siblings()->filter('class')->first()->attr('name');
+            $name = $node->attr('name');
+            $crap = $node->attr('crap');
+
+            return new Method(
+                $firstClassName === null ? '' : $firstClassName,
+                $name === null ? '' : $name,
+                $crap === null ? 0 : (int)$crap,
+            );
+        });
+
+        return $methods;
     }
 }

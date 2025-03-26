@@ -15,10 +15,11 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CloverCrapCheckTest extends TestCase
+final class CloverCrapCheckTest extends TestCase
 {
     private CommandTester $commandTester;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->deleteExistingBaselineFile();
@@ -31,6 +32,7 @@ class CloverCrapCheckTest extends TestCase
         ));
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->deleteExistingBaselineFile();
@@ -209,7 +211,7 @@ class CloverCrapCheckTest extends TestCase
         return [
             'no too crappy methods' => [
                 'expectedStatus' => 0,
-                'expectedOutputs' => '',
+                'expectedOutput' => '',
                 'inputs' => [
                     'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
                     'crap-threshold' => 10,
@@ -217,7 +219,7 @@ class CloverCrapCheckTest extends TestCase
             ],
             'no too crappy methods, (clover relative path)' => [
                 'expectedStatus' => 0,
-                'expectedOutputs' => '',
+                'expectedOutput' => '',
                 'inputs' => [
                     'clover-report-path' => \Safe\getcwd() . '/tests/_testdata/clover.xml',
                     'crap-threshold' => 10,

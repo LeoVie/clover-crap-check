@@ -11,7 +11,7 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGenerator;
 use PHPUnit\Framework\TestCase;
 
-class BaselineOutputGeneratorTest extends TestCase
+final class BaselineOutputGeneratorTest extends TestCase
 {
     /** @dataProvider generateProvider */
     public function testGenerate(string $expected, Baseline $baseline): void

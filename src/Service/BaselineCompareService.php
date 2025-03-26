@@ -13,11 +13,11 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 
-class BaselineCompareService
+final readonly class BaselineCompareService
 {
-    private const COMPARE_RESULT_EQUAL = 0;
-    private const COMPARE_RESULT_SMALLER = -1;
-    private const COMPARE_RESULT_BIGGER = 1;
+    private const int COMPARE_RESULT_EQUAL = 0;
+    private const int COMPARE_RESULT_SMALLER = -1;
+    private const int COMPARE_RESULT_BIGGER = 1;
 
     public function compare(CrapCheckResult $crapCheckResult, Baseline $baseline): BaselineCompareResult
     {

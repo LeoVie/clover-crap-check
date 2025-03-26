@@ -11,7 +11,7 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Parser\BaselineParser;
 use PHPUnit\Framework\TestCase;
 
-class BaselineParserTest extends TestCase
+final class BaselineParserTest extends TestCase
 {
     /** @dataProvider parseProvider */
     public function testParse(Baseline $expected, string $baselineContent): void

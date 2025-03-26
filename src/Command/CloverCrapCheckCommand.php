@@ -26,14 +26,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Path;
 
 #[AsCommand(name: 'clover-crap-check')]
-class CloverCrapCheckCommand extends Command
+final class CloverCrapCheckCommand extends Command
 {
-    private const ARG_CLOVER_REPORT_PATH = 'clover-report-path';
-    private const ARG_CRAP_THRESHOLD = 'crap-threshold';
-    private const OPT_BASELINE = 'baseline';
-    private const OPT_GENERATE_BASELINE = 'generate-baseline';
-    private const OPT_REPORT_LESS_CRAPPY_METHODS = 'report-less-crappy-methods';
-    private const OPT_REPORT_VANISHED_METHODS = 'report-vanished-methods';
+    private const string ARG_CLOVER_REPORT_PATH = 'clover-report-path';
+    private const string ARG_CRAP_THRESHOLD = 'crap-threshold';
+    private const string OPT_BASELINE = 'baseline';
+    private const string OPT_GENERATE_BASELINE = 'generate-baseline';
+    private const string OPT_REPORT_LESS_CRAPPY_METHODS = 'report-less-crappy-methods';
+    private const string OPT_REPORT_VANISHED_METHODS = 'report-vanished-methods';
 
     public function __construct(
         private readonly CrapCheckService       $crapCheckService,
@@ -45,6 +45,7 @@ class CloverCrapCheckCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this->addArgument(
@@ -55,19 +56,16 @@ class CloverCrapCheckCommand extends Command
             name: self::ARG_CRAP_THRESHOLD,
             mode: InputArgument::REQUIRED,
             description: 'Max allowed crap index',
-            default: null,
         )->addOption(
             name: self::OPT_BASELINE,
             shortcut: 'b',
             mode: InputOption::VALUE_REQUIRED,
             description: 'Absolute path to your baseline file',
-            default: null,
         )->addOption(
             name: self::OPT_GENERATE_BASELINE,
             shortcut: 'g',
             mode: InputOption::VALUE_REQUIRED,
             description: 'Absolute path to the baseline file that will get generated',
-            default: null,
         )->addOption(
             name: self::OPT_REPORT_LESS_CRAPPY_METHODS,
             shortcut: 'l',
@@ -81,6 +79,7 @@ class CloverCrapCheckCommand extends Command
         );
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cwd = \Safe\getcwd();
