@@ -11,6 +11,7 @@ use Leovie\PhpunitCrapCheck\Parser\CloverParser;
 use Leovie\PhpunitCrapCheck\Service\BaselineCompareService;
 use Leovie\PhpunitCrapCheck\Service\BaselineOutputService;
 use Leovie\PhpunitCrapCheck\Service\CrapCheckService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -45,7 +46,7 @@ final class CloverCrapCheckTest extends TestCase
         }
     }
 
-    /** @dataProvider commandFailsWithoutRequiredArgumentsProvider */
+    #[DataProvider('commandFailsWithoutRequiredArgumentsProvider')]
     public function testCommandFailsWithoutRequiredArguments(array $inputs): void
     {
         self::expectException(RuntimeException::class);
@@ -72,7 +73,7 @@ final class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider commandFailsWithIllegalInputsProvider */
+    #[DataProvider('commandFailsWithIllegalInputsProvider')]
     public function testCommandFailsWithIllegalInputs(string $expectedError, array $inputs): void
     {
         $this->commandTester->execute($inputs);
@@ -118,7 +119,7 @@ final class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider generateBaselineProvider */
+    #[DataProvider('generateBaselineProvider')]
     public function testGenerateBaseline(string $expectedBaselinePath, string $expectedBaseline, array $inputs): void
     {
         $this->commandTester->execute($inputs);
@@ -182,7 +183,7 @@ final class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider checkProvider */
+    #[DataProvider('checkProvider')]
     public function testCheck(int $expectedStatus, string $expectedOutput, array $inputs): void
     {
         $this->commandTester->execute($inputs);

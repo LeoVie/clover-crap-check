@@ -36,6 +36,7 @@ final class BaselineOutputServiceTest extends TestCase
     public function testSave(): void
     {
         $baselineOutputGenerator = $this->createMock(BaselineOutputGeneratorInterface::class);
+        /** @psalm-suppress UndefinedMethod */
         $baselineOutputGenerator
             ->method('generate')
             ->willReturn('baseline');

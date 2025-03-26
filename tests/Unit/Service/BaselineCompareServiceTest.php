@@ -13,11 +13,12 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Service\BaselineCompareService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class BaselineCompareServiceTest extends TestCase
 {
-    /** @dataProvider compareProvider */
+    #[DataProvider('compareProvider')]
     public function testCompare(
         BaselineCompareResult $expected,
         CrapCheckResult       $crapCheckResult,

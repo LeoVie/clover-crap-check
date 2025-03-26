@@ -6,11 +6,12 @@ namespace Leovie\PhpunitCrapCheck\Tests\Unit\Parser;
 
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\Parser\CloverParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CloverParserTest extends TestCase
 {
-    /** @dataProvider getMethodsProvider */
+    #[DataProvider('getMethodsProvider')]
     public function testGetMethods(array $expected, string $cloverReportContent): void
     {
         self::assertEquals($expected, (new CloverParser())->parseMethods($cloverReportContent));

@@ -10,14 +10,16 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\Parser\CloverParserInterface;
 use Leovie\PhpunitCrapCheck\Service\CrapCheckService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CrapCheckServiceTest extends TestCase
 {
-    /** @dataProvider checkProvider */
+    #[DataProvider('checkProvider')]
     public function testCheck(CrapCheckResult $expected, array $methods, int $threshold): void
     {
         $cloverParser = $this->createMock(CloverParserInterface::class);
+        /** @psalm-suppress UndefinedMethod */
         $cloverParser->method('parseMethods')->willReturn($methods);
 
         self::assertEquals(

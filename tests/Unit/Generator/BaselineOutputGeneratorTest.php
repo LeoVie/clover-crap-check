@@ -9,11 +9,12 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Generator\BaselineOutputGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class BaselineOutputGeneratorTest extends TestCase
 {
-    /** @dataProvider generateProvider */
+    #[DataProvider('generateProvider')]
     public function testGenerate(string $expected, Baseline $baseline): void
     {
         self::assertJsonStringEqualsJsonString($expected, (new BaselineOutputGenerator())->generate($baseline));

@@ -24,7 +24,7 @@
         "ergebnis/composer-normalize": "^2.45",
         "infection/infection": "^0.29.14",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^12.0",
         "psalm/plugin-phpunit": "^0.19.3",
         "rregeer/phpunit-coverage-check": "^0.3.1",
         "symfony/var-dumper": "^7.2",
@@ -67,6 +67,6 @@
             "@test:functional"
         ],
         "test:functional": "phpunit --testsuite=Functional --no-coverage --display-phpunit-deprecations",
-        "test:unit": "XDEBUG_MODE=coverage phpunit --testsuite=Unit --display-phpunit-deprecations"
+        "test:unit": "phpunit --testsuite=Unit --display-phpunit-deprecations"
     }
 }
