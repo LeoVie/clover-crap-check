@@ -7,9 +7,11 @@ namespace Leovie\PhpunitCrapCheck\Generator;
 use Leovie\PhpunitCrapCheck\DTO\Baseline;
 use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
+use Override;
 
-class BaselineOutputGenerator implements BaselineOutputGeneratorInterface
+final readonly class BaselineOutputGenerator implements BaselineOutputGeneratorInterface
 {
+    #[Override]
     public function generate(Baseline $baseline): string
     {
         $baselineCrapCheckResult = $baseline->crapCheckResult;

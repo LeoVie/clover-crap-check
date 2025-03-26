@@ -9,11 +9,12 @@ use Leovie\PhpunitCrapCheck\DTO\EmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\Parser\BaselineParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class BaselineParserTest extends TestCase
+final class BaselineParserTest extends TestCase
 {
-    /** @dataProvider parseProvider */
+    #[DataProvider('parseProvider')]
     public function testParse(Baseline $expected, string $baselineContent): void
     {
         self::assertEquals($expected, (new BaselineParser())->parse($baselineContent));

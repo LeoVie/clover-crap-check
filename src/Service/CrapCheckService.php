@@ -10,10 +10,10 @@ use Leovie\PhpunitCrapCheck\DTO\NonEmptyCrapCheckResult;
 use Leovie\PhpunitCrapCheck\DTO\Method;
 use Leovie\PhpunitCrapCheck\Parser\CloverParserInterface;
 
-class CrapCheckService
+final readonly class CrapCheckService
 {
     public function __construct(
-        private readonly CloverParserInterface $cloverParser
+        private CloverParserInterface $cloverParser
     )
     {
     }

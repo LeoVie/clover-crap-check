@@ -11,14 +11,16 @@ use Leovie\PhpunitCrapCheck\Parser\CloverParser;
 use Leovie\PhpunitCrapCheck\Service\BaselineCompareService;
 use Leovie\PhpunitCrapCheck\Service\BaselineOutputService;
 use Leovie\PhpunitCrapCheck\Service\CrapCheckService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CloverCrapCheckTest extends TestCase
+final class CloverCrapCheckTest extends TestCase
 {
     private CommandTester $commandTester;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->deleteExistingBaselineFile();
@@ -31,6 +33,7 @@ class CloverCrapCheckTest extends TestCase
         ));
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->deleteExistingBaselineFile();
@@ -43,7 +46,7 @@ class CloverCrapCheckTest extends TestCase
         }
     }
 
-    /** @dataProvider commandFailsWithoutRequiredArgumentsProvider */
+    #[DataProvider('commandFailsWithoutRequiredArgumentsProvider')]
     public function testCommandFailsWithoutRequiredArguments(array $inputs): void
     {
         self::expectException(RuntimeException::class);
@@ -70,7 +73,7 @@ class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider commandFailsWithIllegalInputsProvider */
+    #[DataProvider('commandFailsWithIllegalInputsProvider')]
     public function testCommandFailsWithIllegalInputs(string $expectedError, array $inputs): void
     {
         $this->commandTester->execute($inputs);
@@ -116,7 +119,7 @@ class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider generateBaselineProvider */
+    #[DataProvider('generateBaselineProvider')]
     public function testGenerateBaseline(string $expectedBaselinePath, string $expectedBaseline, array $inputs): void
     {
         $this->commandTester->execute($inputs);
@@ -180,7 +183,7 @@ class CloverCrapCheckTest extends TestCase
         ];
     }
 
-    /** @dataProvider checkProvider */
+    #[DataProvider('checkProvider')]
     public function testCheck(int $expectedStatus, string $expectedOutput, array $inputs): void
     {
         $this->commandTester->execute($inputs);
@@ -209,7 +212,7 @@ class CloverCrapCheckTest extends TestCase
         return [
             'no too crappy methods' => [
                 'expectedStatus' => 0,
-                'expectedOutputs' => '',
+                'expectedOutput' => '',
                 'inputs' => [
                     'clover-report-path' => __DIR__ . '/../_testdata/clover.xml',
                     'crap-threshold' => 10,
@@ -217,7 +220,7 @@ class CloverCrapCheckTest extends TestCase
             ],
             'no too crappy methods, (clover relative path)' => [
                 'expectedStatus' => 0,
-                'expectedOutputs' => '',
+                'expectedOutput' => '',
                 'inputs' => [
                     'clover-report-path' => \Safe\getcwd() . '/tests/_testdata/clover.xml',
                     'crap-threshold' => 10,

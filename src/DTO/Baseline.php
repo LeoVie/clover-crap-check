@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leovie\PhpunitCrapCheck\DTO;
 
-class Baseline
+final readonly class Baseline
 {
     public function __construct(
-        public readonly CrapCheckResult $crapCheckResult
+        public CrapCheckResult $crapCheckResult
     )
     {
     }

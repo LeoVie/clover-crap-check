@@ -8,15 +8,12 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-20.04 ]
-        php-version: [ '8.2' ]
+        php-version: [ '8.4' ]
         coverage-driver: [ xdebug ]
         include:
-          - { operating-system: 'ubuntu-20.04', php-version: '8.1', coverage-driver: 'xdebug'}
-          - { operating-system: 'ubuntu-20.04', php-version: '8.2', coverage-driver: 'xdebug'}
-          - { operating-system: 'windows-2022', php-version: '8.1', coverage-driver: 'xdebug'}
-          - { operating-system: 'windows-2022', php-version: '8.2', coverage-driver: 'xdebug'}
-          - { operating-system: 'macos-12', php-version: '8.1', coverage-driver: 'xdebug'}
-          - { operating-system: 'macos-12', php-version: '8.2', coverage-driver: 'xdebug'}
+          - { operating-system: 'ubuntu-20.04', php-version: '8.4', coverage-driver: 'xdebug'}
+          - { operating-system: 'windows-2022', php-version: '8.4', coverage-driver: 'xdebug'}
+          - { operating-system: 'macos-14', php-version: '8.4', coverage-driver: 'xdebug'}
 
     name: CI on ${{ matrix.operating-system }} with PHP ${{ matrix.php-version }}, using ${{ matrix.coverage-driver }}
 
@@ -32,7 +29,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           coverage: ${{ matrix.coverage-driver }}
           ini-values: memory_limit=512M, xdebug.mode=coverage
-          tools: composer:v2.5
+          tools: composer:v2.8
           extensions: ctype, iconv, mbstring
       - name: "Install requirements"
         run: composer install --no-interaction
